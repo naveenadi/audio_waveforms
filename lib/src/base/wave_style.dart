@@ -24,10 +24,10 @@ class WaveStyle {
   final StrokeCap waveCap;
 
   ///Color line in the middle
-  final Color middleLineColor;
+  final Color seekLineColor;
 
-  ///Thickness of middle line
-  final double middleLineThickness;
+  ///Thickness of seek line. For microphone recording this line is in the middle
+  final double seekLineThickness;
 
   ///Width of each wave
   final double waveThickness;
@@ -65,10 +65,14 @@ class WaveStyle {
   final double durationTextPadding;
 
   ///Provide gradient to waveform using this. Use shader as shown in example.
-  ///
-  ///For only two colors. offset.dx is gradient effect starts and offset.dy
-  ///is for y-axis effect.
   final Shader? gradient;
+
+  ///This is applied to each wave while generating. Use this to [scale] the waves.
+  /// Defaluts to 1.0.
+  final double scaleFactor;
+
+  ///This gradient is applied to waves which idicates currenly played part.
+  final Shader? liveWaveGradient;
 
   const WaveStyle({
     this.waveColor = Colors.blueGrey,
@@ -78,8 +82,8 @@ class WaveStyle {
     this.showBottom = true,
     this.bottomPadding,
     this.waveCap = StrokeCap.round,
-    this.middleLineColor = Colors.redAccent,
-    this.middleLineThickness = 3.0,
+    this.seekLineColor = Colors.redAccent,
+    this.seekLineThickness = 3.0,
     this.waveThickness = 3.0,
     this.showDurationLabel = false,
     this.extendWaveform = false,
@@ -95,6 +99,11 @@ class WaveStyle {
     this.durationTextPadding = 20.0,
     this.durationLinesColor = Colors.blueAccent,
     this.gradient,
+    this.scaleFactor = 1.0,
+    this.liveWaveGradient,
   }) : assert(waveThickness < spacing,
             "waveThickness can't be greater than spacing");
+
+  //TODO: use this contstuctor for file waveforms
+  //WaveStyle.file();
 }

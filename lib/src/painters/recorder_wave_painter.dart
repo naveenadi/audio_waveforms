@@ -1,12 +1,17 @@
 import '/src/base/label.dart';
 import 'package:flutter/material.dart';
-import 'base/utils.dart';
+import '../base/utils.dart';
 
 ///This will paint the waveform
-///Addtional Information
+///
+///Addtional Information to play around
+///
 ///this gives location of first wave from right to left
+///
 ///-totalBackDistance.dx + dragOffset.dx + (spacing * i)
+///
 ///this gives location of first wave from left to right
+///
 ///-totalBackDistance.dx + dragOffset.dx
 class WavePainter extends CustomPainter {
   final List<double> waveData;
@@ -74,7 +79,7 @@ class WavePainter extends CustomPainter {
           ..color = middleLineColor
           ..strokeWidth = middleLineThickness,
         _durationLinePaint = Paint()
-          ..strokeWidth = 2
+          ..strokeWidth = 3
           ..color = durationLinesColor;
   var _labelPadding = 0.0;
 

@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '/src/base/utils.dart';
-import 'audio_wave_interface.dart';
+import '../base/audio_waveforms_interface.dart';
+import '../base/label.dart';
 
-class WaveController extends ChangeNotifier {
+class RecorderController extends ChangeNotifier {
   final List<double> _waveData = [];
 
   ///At which rate waveform needs to be updated
@@ -66,7 +67,7 @@ class WaveController extends ChangeNotifier {
           _recorderState = RecorderState.initialized;
         }
         if (_recorderState == RecorderState.paused && Platform.isAndroid) {
-          _isRecording = await AudioWaveInterface.instance.resume();
+          _isRecording = await AudioWaveformsInterface.instance.resume();
           if (_isRecording) {
             _startTimer();
             _recorderState = RecorderState.recording;
@@ -78,7 +79,7 @@ class WaveController extends ChangeNotifier {
         }
 
         if (_recorderState == RecorderState.initialized) {
-          _isRecording = await AudioWaveInterface.instance
+          _isRecording = await AudioWaveformsInterface.instance
               .record(encoder.index, sampleRate, path);
           if (_isRecording) {
             _recorderState = RecorderState.recording;
@@ -97,7 +98,7 @@ class WaveController extends ChangeNotifier {
 
   ///This method is only required for Android platform
   Future<void> _initRecorder(String? path) async {
-    final initialized = await AudioWaveInterface.instance
+    final initialized = await AudioWaveformsInterface.instance
         .initRecorder(path, encoder.index, sampleRate);
     if (initialized) {
       _recorderState = RecorderState.initialized;
@@ -113,7 +114,7 @@ class WaveController extends ChangeNotifier {
   ///
   /// This method is called during record().
   Future<bool> checkPermission() async {
-    final result = await AudioWaveInterface.instance.checkPermission();
+    final result = await AudioWaveformsInterface.instance.checkPermission();
     if (result) {
       _hasPermission = result;
     }
@@ -125,7 +126,7 @@ class WaveController extends ChangeNotifier {
   ///Can start recording again after pausing.
   Future<void> pause() async {
     if (_recorderState == RecorderState.recording) {
-      _isRecording = (await AudioWaveInterface.instance.pause()) ?? true;
+      _isRecording = (await AudioWaveformsInterface.instance.pause()) ?? true;
       if (_isRecording) {
         throw "Failed to pause recording";
       }
@@ -144,7 +145,7 @@ class WaveController extends ChangeNotifier {
   Future<String?> stop([bool callReset = true]) async {
     if (_recorderState == RecorderState.recording ||
         _recorderState == RecorderState.paused) {
-      final path = await AudioWaveInterface.instance.stop();
+      final path = await AudioWaveformsInterface.instance.stop();
       if (path != null) {
         _isRecording = false;
         _timer?.cancel();
@@ -168,7 +169,7 @@ class WaveController extends ChangeNotifier {
 
   ///gets decibels from native
   Future<double?> _getDecibel() async =>
-      await AudioWaveInterface.instance.getDecibel();
+      await AudioWaveformsInterface.instance.getDecibel();
 
   ///gets decibel by every defined frequency
   void _startTimer() {

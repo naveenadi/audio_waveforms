@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '/audio_waveforms.dart';
-import '/src/wave_painter.dart';
+import 'painters/recorder_wave_painter.dart';
 import 'base/wave_clipper.dart';
 
 class AudioWaveforms extends StatefulWidget {
   final Size size;
-  final WaveController waveController;
+  final RecorderController waveController;
   final WaveStyle waveStyle;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
@@ -76,8 +76,8 @@ class _AudioWaveformsState extends State<AudioWaveforms> {
               size: widget.size,
               painter: WavePainter(
                 waveThickness: widget.waveStyle.waveThickness,
-                middleLineThickness: widget.waveStyle.middleLineThickness,
-                middleLineColor: widget.waveStyle.middleLineColor,
+                middleLineThickness: widget.waveStyle.seekLineThickness,
+                middleLineColor: widget.waveStyle.seekLineColor,
                 waveData: widget.waveController.waveData,
                 callPushback: widget.waveController.shouldRefresh,
                 bottomPadding:
@@ -166,4 +166,5 @@ class _AudioWaveformsState extends State<AudioWaveforms> {
       setState(() {});
     });
   }
+
 }
